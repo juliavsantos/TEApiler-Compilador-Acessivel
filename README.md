@@ -1,10 +1,10 @@
 # TEApiler - Compilador para uma linguagem TEA
 
 # Integrantes:
-| Julia Aparecida Venâncio dos Santos |
-| Matheus Akira Saito de Souza |
-| Ronald Alencar do Rosário |
-| William Souza |
+- Julia Aparecida Venâncio dos Santos 
+- Matheus Akira Saito de Souza |
+- Ronald Alencar do Rosário |
+- William Souza |
 
 # Objetivo:
 Desenvolver um compilador para uma linguagem de programação acessível voltada ao ensino de programação para pessoas com TEA.

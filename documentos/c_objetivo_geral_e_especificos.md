@@ -1,4 +1,3 @@
-Oi, gente! Hoje não consegui ir porque estava passando mal. Mas, como eu tinha falado para o Matheus, já comecei a fazer o modelo_c.md. Por enquanto, ele está assim:
 # Template de Definição de Objetivos da Pesquisa Científica
 ### Computabilidade e Complexidade de Algoritmos
 

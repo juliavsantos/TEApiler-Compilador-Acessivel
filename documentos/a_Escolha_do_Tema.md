@@ -96,21 +96,28 @@
 11. KIPPS, James R. Analysis of Tomita’s algorithm for general context-free parsing. In: INTERNATIONAL WORKSHOP ON PARSING TECHNOLOGIES, 1., 1989. Proceedings of the First International Workshop on Parsing Technologies. Pittsburgh: Carnegie Mellon University, 1989. p. 193–202. Disponível em: https://aclanthology.org/W89-0220/. Acesso em: 23 set. 2026.
 12. OPEDAL, Andreas; ZMIGROD, Ran; VIEIRA, Tim; COTTERELL, Ryan; EISNER, Jason. Efficient semiring-weighted Earley parsing. In: ANNUAL MEETING OF THE ASSOCIATION FOR COMPUTATIONAL LINGUISTICS, 61., 2023. Proceedings of the 61st Annual Meeting of the Association for Computational Linguistics (Volume 1: Long Papers). Toronto: Association for Computational Linguistics, 2023. p. 3687–3713. DOI: 10.18653/v1/2023.acl-long.204. Disponível em: https://aclanthology.org/2023.acl-long.204/. Acesso em: 22 set. 2026.
 
-### Integrante 2 — Ronald Lopes Alencar do Rosario
-- **Passo(s) em que atuou:** `[Passos 1, 2, 3, 5 e 7]`
-- **O que fez em cada passo:** `[Passo 1: participei da definição dos principais conceitos da pesquisa, com foco em compiladores, design de linguagem, IHC e acessibilidade para pessoas com TEA. Passo 2: elaborei uma string de busca relacionada a Design de Linguagem, Análise Léxica e Análise Sintática. Passo 3: realizei pesquisas no Google Acadêmico e na SBC OpenLib (SOL), buscando artigos relacionados ao tema do projeto. Passo 5: executei buscas por trabalhos sobre linguagens de programação simplificadas, compiladores, ensino de programação, mensagens de erro e interfaces acessíveis, selecionando artigos relacionados ao desenvolvimento da proposta. Passo 7: realizei a leitura e o resumo dos artigos selecionados, analisando principalmente como linguagens simplificadas, compiladores, feedback de erros e princípios de IHC podem contribuir para uma linguagem de programação voltada ao ensino de pessoas com TEA.]`
+### Integrante 2 — Matheus Akira Saito de Souza
+- **Passo(s) em que atuou:** `[2, 3 e 5]`
+- **O que fez em cada passo:** `[Passo 2: Pesquisei as principais áreas relacionadas à complexidade de algoritmos e análise assintótica, buscando identificar possíveis abordagens que poderiam ser relacionadas ao projeto.Passo 3: Reuni possíveis ideias e temas relacionados à complexidade de algoritmos e compiladores, contribuindo para a delimitação do tema da pesquisa. Passo 5: Auxiliei no preenchimento e na organização do documento da etapa, reunindo as informações levantadas durante a pesquisa.]`
 - **Tempo dedicado (aprox.):** `[5h]`
-- **Evidência da contribuição:** `[Pesquisas realizadas no Google Acadêmico e SBC OpenLib (SOL), além da leitura e resumo de artigos como PortuCol: uma pseudolinguagem inspirada em C ANSI para o Ensino de Lógica de Programação e Algoritmos; Python Enhanced Error Feedback: Uma IDE Online de Apoio ao Processo de Ensino-Aprendizagem em Programação; e Ferramenta interativa para o ensino de compiladores.]`
+- **Evidência da contribuição:** `[https://drive.google.com/drive/folders/1ShXh3pHOML-yNEssLXeVTk39nXj4h-6n?usp=sharing
+ Artigos Finais Exportados]`
 
 ### Integrante 3 — `[Ronald Alencar do Rosário]`
-- **O que fez nesta etapa:** `[Busca por artigos que contribuem com o projeto.]`
-- **Tempo dedicado (aprox.):** `[ex.: 1h]`
-- **Evidência da contribuição:** `[https://www.periodicos.capes.gov.br/index.php/acervo/buscador.html?task=detalhes&source=digital&id=W3124683229]`
+- **Passo(s) em que atuou:** `[Passos 1, 2, 3, 5 e 7]`
+- **O que fez em cada passo:** `[Passo 1: participei da definição dos principais conceitos da pesquisa, com foco em compiladores, design de linguagem, IHC e acessibilidade para pessoas com TEA. Passo 2: elaborei uma string de busca relacionada a Design de Linguagem, Análise Léxica e Análise Sintática. Passo 3: realizei pesquisas no Google Acadêmico e na SBC OpenLib (SOL), buscando artigos relacionados ao tema do projeto. Passo 5: executei buscas por trabalhos sobre linguagens de programação simplificadas, compiladores, ensino de programação, mensagens de erro e interfaces acessíveis, selecionando artigos relacionados ao desenvolvimento da proposta. Passo 7: realizei a leitura e o resumo dos artigos selecionados, analisando principalmente como linguagens simplificadas, compiladores, feedback de erros e princípios de IHC podem contribuir para uma linguagem de programação voltada ao ensino de pessoas com TEA.]`
+- **Tempo dedicado (aprox.):** ` [5h]`
+*Evidência da contribuição:* `[Pesquisas realizadas no Google Acadêmico e SBC OpenLib (SOL), além da leitura e resumo de artigos como PortuCol: uma pseudolinguagem inspirada em C ANSI para o Ensino de Lógica de Programação e Algoritmos; Python Enhanced Error Feedback: Uma IDE Online de Apoio ao Processo de Ensino-Aprendizagem em Programação; e Ferramenta interativa para o ensino de compiladores.]`
 
 ### Integrante 4 — `[William Souza]`
-- **O que fez nesta etapa:** `[Pesquisa e análise de artigos ciêntificos dentro da interação  interface humano-computador (IHC) para crianças com espectro autista (TEA)]`
-- **Tempo dedicado (aprox.):** `[ex.: 1h30m]`
-- **Evidência da contribuição:** `[https://dl.acm.org/doi/10.1145/3776539]`
+- **Passo(s) em que atuou:** `[Passos 2, 3, 5, 6 e 7]`
+- **O que fez em cada passo:** `[Passo 2: executei a busca por artigos relacionados á interface e design da linguagem, bem como pesquisas com base na complexidade de criação da linguagem de programação e a acessibilidade do mesmo, além do suporte ao ensino e barreiras. a consulta foram feitas no SBC Openlib SOL, ACM Digital Library, IEEE Xplore e SciElO e Google Academico; 
+Passo 3: Busca realizada atráves do google academico e SBC e IEEE Xplorer por datasets conhecidos e estando relacionados ao objetivo do projeto e co-relacionando com as disciplinas, além das discussões á respeito dos artigos encontrado e strings utilizadas para busca.
+Passo 5: Enviei todos artigos encontrados e de maior coerência e contexto com as informações necessárias para visualização. 
+Passo 6: Foram realizadas exposições dos itens encontrados, assim como o sanar de dúvidas á respeito do abstract/resumo, levando em consideração á estrutura de pesquisa do projeto.
+Passo 7: Utilizei de ferramentas para anotação de informações bases encontradas nos artigos publicados dentro dos anos mais recentes, como foi encontrado uma divulgação 2026, realizei a leitura dos abstracts]`
+- **Tempo dedicado (aprox.):** `[3h25]`
+*Evidência da contribuição:* [https://sol.sbc.org.br/index.php/wie/article/view/26297, https://sol.sbc.org.br/index.php/sbie/article/view/38477/38251, https://dl.acm.org/doi/10.1145/3772318.3791853, https://dl.acm.org/doi/10.1145/3772318.3791853....]
 
 *(Copie o bloco acima para cada integrante adicional do grupo.)*
 
@@ -120,7 +127,7 @@
 |---|---|---|
 | `[Julia Aparecida Venâncio dos Santos]` | `[Levantamento e análise de artigos científicos para fundamentação e justificativa do projeto para pessoas com TEA]` | `[25%]` |
 | `[Matheus Akira Saito de Souza]` | `[Levantamento de pesquisa para principais áreas de Complexidade de Algoritmo e compiladores]` | `[25%]` |
-| `[Ronald Alencar do Rosário]` | `[Auxilio nas pesquisas de artigo para justificativa do projeto]` | `[25%]` |
+| `[Ronald Alencar do Rosário]` | `[Auxilio nas pesquisas de artigo para justificativa do projeto para fundamentação e justificativa do projeto para pessoas com TEA]` | `[25%]` |
 | `[William Souza]` | `[Levantamento e análise de artigos científicos na área de IHC, para entender a interação para crianças com TEA]` | `[25%]` |
 
 *A soma das porcentagens deve ser igual a 100%. Divergências de percepção sobre a participação devem ser discutidas em grupo antes do envio — o orientador pode solicitar esclarecimentos individuais em caso de disparidade relevante.*

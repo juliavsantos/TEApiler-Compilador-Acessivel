@@ -110,7 +110,7 @@
 
 - [ X ] Gramática em EBNF cobrindo todas as features da lista fechada (seção 2)
 - [ X ] Pelo menos 3 programas de exemplo que a linguagem deve conseguir expressar
-- [ ] Derivação manual de pelo menos 1 exemplo, para checar se a gramática realmente gera o programa esperado
+- [ X ] Derivação manual de pelo menos 1 exemplo, para checar se a gramática realmente gera o programa esperado
 
 **Gramática (EBNF):**
 (* ============ PROGRAMA ============ *)
@@ -249,12 +249,13 @@ Teste de Mesa:
 |---|---|---|---|
 | Ronald Lopes Alencar do Rosario | Ajudei a definir o pubico alvo, os principios de acessibilidade, a features iniciais da linguagem e participei da pesquisa de refetencia para TEA e ensino de programação | a principal dificuldade foi pensar em uma sintaxe simples sem limitar demais a linguagem. | pretendo manter o foco em clareza e simplicidade e ajustar a linguagem conforme surgirem ambiguidades ou dificuldades nas proximas etapas. |
 | Julia Aparecida Venâncio dos Santos | Participei da definição dos princípios da linguagem, da especificação dos tokens e da organização das etapas do projeto. Também ajudei na organização do GitHub e das evidências da Sprint.| Tive dificuldade para definir quais características da linguagem poderiam contribuir para uma sintaxe mais clara e previsível, além de organizar as informações da Sprint.|Manter a organização das tarefas e das evidências. Ajustar a definição da linguagem conforme as decisões do grupo e as referências utilizadas no projeto.|
-| William Souza | Editei passo 2 e 3 sendo eles a lista fechada de features da v1, e a tabela de tokens, pesquisei, abordei o tópico e discuti com os demais integrantes do projeto para discernir ideias, foco do projeto e alinhamento de ideias de implementação, avaliação do que estava sendo escrito e comparativos com a premissa do projeto. Realizei pesquisa corrida de conceitos sobre análises léxica, sintática, validação de caracteres, desing de linguagem e propriedades de uma linguagem de programação voltado ao ensino e apoio ao público de destino (TEA), para me introduzir sobre o que seria necessário implementar posteriormente e ter clareza de como a linguagem deve se comportar. Encontrei um pouco de dificuldade em escrever alguns tópicos do passo 2, como o que seria excluido ou deixado de fora da v1, na primeira fase não seria viável, e também na tabela, como tokens e expressão regulares, já que fiquei um pouco perdido e sem saber como estruturar o conjunto, bem como a cadeia de caracteres pertencente ao alfabeto da linguagem que selecionamos.| Irei manter todos neste primeiro modo, já foi discutido e concordado assim.
+| William Souza | Editei passo 2 e 3 sendo eles a lista fechada de features da v1, e a tabela de tokens, pesquisei, abordei o tópico e discuti com os demais integrantes do projeto para discernir ideias, foco do projeto e alinhamento de ideias de implementação, avaliação do que estava sendo escrito e comparativos com a premissa do projeto. Realizei pesquisa corrida de conceitos sobre análises léxica, sintática, validação de caracteres, desing de linguagem e propriedades de uma linguagem de programação voltado ao ensino e apoio ao público de destino (TEA), para me introduzir sobre o que seria necessário implementar posteriormente e ter clareza de como a linguagem deve se comportar. Encontrei um pouco de dificuldade em escrever alguns tópicos do passo 2, como o que seria excluido ou deixado de fora da v1, na primeira fase não seria viável, e também na tabela, como tokens e expressão regulares, já que fiquei um pouco perdido e sem saber como estruturar o conjunto, bem como a cadeia de caracteres pertencente ao alfabeto da linguagem que selecionamos. | Irei manter todos neste primeiro modo, já foi discutido e concordado assim.|
+| Matheus Akira Saito de Souza | Defini parte da linguagem em grupo, discuti e trouxe problemas de acessibilidade de acordo com os artigos que baseiam o projeto para a definição da linguagem. Editei o passo 4 definindo o rascunho da linguagem no formato EBNF. Revisei os passos 1 e 2.| Entender as necessidades da linguagem para pessoas com TEA, e nas funcionalidades que temos que abstrair para facilitar a linguagem | Organizar tempo e horário para o projeto, Manter e organizar de maneira estrutura as tarefas e obrigações e ajustar a definição da nossa linguagem |
 
 ## 7. Evidências gerais
 
 - Link da especificação léxica: https://drive.google.com/drive/folders/1Dg_Qa4gx0Hbu5rMRUk6QghtaZSh6qZ8O?usp=sharing
-- Link do rascunho da gramática:
+- Link do rascunho da gramática: https://docs.google.com/document/d/1CFzWWAhGM3eqMH_sSkr1Ym1aUHOH6hIvEOzyJ-lH7Xg/edit?usp=sharing
 - Link do board: https://github.com/users/juliavsantos/projects/1
 
 ---

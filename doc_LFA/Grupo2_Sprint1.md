@@ -114,7 +114,10 @@
 
 **Gramática (EBNF):**
 (* ============ PROGRAMA ============ *)
-programa      = { comando } ;
+programa      = [ NOVA_LINHA ] ,
+                "PROGRAMA" , NOVA_LINHA ,
+                { comando } ,
+                "FIM_PROGRAMA" , [ NOVA_LINHA ] ;
 
 comando       = ( atribuicao
                 | leitura
@@ -174,56 +177,59 @@ PALAVRAS_RESERVADAS = "SE" | "ENTAO" | "SENAO" | "FIM_SE"
                     | "REPITA" | "VEZES" | "FIM_REPITA"
                     | "LEIA" | "ESCREVA" | "E" | "OU" | "NAO"
                     | "DIFERENTE_DE" | "MAIOR_QUE" | "MENOR_QUE"
-                    | "MAIOR_OU_IGUAL_A" | "MENOR_OU_IGUAL_A" | "IGUAL_A";
+                    | "MAIOR_OU_IGUAL_A" | "MENOR_OU_IGUAL_A" | "IGUAL_A"
+                    | "PROGRAMA" | "FIM_PROGRAMA" ;
 
 **Programas de exemplo:**
-1. Verificar se número é "grande" ou não
-PROGRAMA
-ESCREVA "Qual é o seu número?"
-LEIA numero
-contador = 0
-REPITA numero VEZES
-    contador = contador + 1
-FIM_REPITA
-SE contador MAIOR_QUE 5 ENTAO
-    ESCREVA "Número grande!"
-FIM_SE
-FIM_PROGRAMA
+1. Verificar se número é "grande" ou não <br>
+PROGRAMA <br>
+ESCREVA "Qual é o seu número?" <br>
+LEIA numero <br>
+contador = 0 <br>
+REPITA numero VEZES <br>
+    contador = contador + 1 <br>
+FIM_REPITA <br>
+SE contador MAIOR_QUE 5 ENTAO <br>
+    ESCREVA "Número grande!" <br>
+FIM_SE <br>
+FIM_PROGRAMA <br>
 
-2. Verificar se número é par ou não
-PROGRAMA
-ESCREVA "Digite um número qualquer:"
-LEIA numero
-SE RESTO_DE numero IGUAL_A 0
-    ESCREVA "Seu número é par!"
-FIM_SE
-FIM_PROGRAMA
+2. Verificar se número é par ou não <br>
+PROGRAMA <br>
+ESCREVA "Digite um número qualquer:" <br>
+LEIA numero <br>
+SE RESTO_DE numero IGUAL_A 0 <br>
+    ESCREVA "Seu número é par!" <br>
+FIM_SE <br>
+FIM_PROGRAMA <br>
 
-3. Somando de dobro de cada numero até 3, desde que o resultado não seja maior que 100
-soma = 0
-contador = 1
-ENQUANTO contador MENOR_OU_IGUAL 3 E NAO soma MAIOR_QUE 100 FACA
-    soma = soma + contador * 2
-    contador = contador + 1
-FIM_ENQUANTO
-ESCREVA "Soma: " + soma
+3. Somando de dobro de cada numero até 3, desde que o resultado não seja maior que 100 <br>
+PROGRAMA <br>
+soma = 0 <br>
+contador = 1 <br>
+ENQUANTO contador MENOR_OU_IGUAL 3 E NAO soma MAIOR_QUE 100 FACA <br>
+    soma = soma + contador * 2 <br>
+    contador = contador + 1 <br>
+FIM_ENQUANTO <br>
+ESCREVA "Soma: " + soma <br>
+FIM_PROGRAMA <br>
 
-Resultado esperado: "Soma: 12"
+Resultado esperado: "Soma: 12" <br>
 
-Teste de Mesa:
-1	soma = 0	0	n/d	n/d
-2	contador = 1	0	1	n/d
-	ENQUANTO, avaliação 1	0	1	1 <= 3 e NAO (0 > 100) → verdadeira
-3	soma = soma + contador * 2 → 0 + 1*2	2	1	n/d
-4	contador = contador + 1	2	2	n/d
-	ENQUANTO, avaliação 2	2	2	2 <= 3 e NAO (2 > 100) → verdadeira
-5	soma = 2 + 2*2	6	2	n/d
-6	contador = 2 + 1	6	3	n/d
-	ENQUANTO, avaliação 3	6	3	3 <= 3 e NAO (6 > 100) → verdadeira
-7	soma = 6 + 3*2	12	3	n/d
-8	contador = 3 + 1	12	4	n/d
-	ENQUANTO, avaliação 4	12	4	4 <= 3 → falsa, sai do laço
-9	ESCREVA "Soma: " + soma	12	4	n/d
+Teste de Mesa: <br>
+1	soma = 0	0	n/d	n/d <br>
+2	contador = 1	0	1	n/d <br>
+	ENQUANTO, avaliação 1	0	1	1 <= 3 e NAO (0 > 100) → verdadeira <br>
+3	soma = soma + contador * 2 → 0 + 1*2	2	1	n/d <br>
+4	contador = contador + 1	2	2	n/d <br>
+	ENQUANTO, avaliação 2	2	2	2 <= 3 e NAO (2 > 100) → verdadeira <br>
+5	soma = 2 + 2*2	6	2	n/d <br>
+6	contador = 2 + 1	6	3	n/d <br>
+	ENQUANTO, avaliação 3	6	3	3 <= 3 e NAO (6 > 100) → verdadeira <br>
+7	soma = 6 + 3*2	12	3	n/d <br>
+8	contador = 3 + 1	12	4	n/d <br>
+	ENQUANTO, avaliação 4	12	4	4 <= 3 → falsa, sai do laço <br>
+9	ESCREVA "Soma: " + soma	12	4	n/d <br>
 
 ## 5. Scrum
 

@@ -46,9 +46,9 @@
 2. **Linguagem não tipada:** Essa restrição de tipos tem como objetivo reduzir a carga cognitiva e a abstração para a criança com TEA. Assim fazendo com que o aluno apenas declare a variável sem se preocupar com o seu tipo. Em linguagens tradicionais, termos inteiros, decimais (float), números negativos e números gigantes. Para o público-alvo isso gera abstrações desnecessárias que aumentam o risco de erro ou confusão.
 3. **Variáveis e atribuição:** As variáveis e atribuição serão declaradas como na linguagem Python, por serem consideradas intuitivas e fáceis de se aplicar no contexto TEA. As variáveis terão a mesma regra de nomeação, onde não podem começar com um número ou terem espaço. O símbolo de atribuição será o símbolo "=".
 4. **Estruturas de Controles:** Serão usados laços condicionais e repetição simples para que os alunos sejam expostos a tais conceitos, mas, que ainda mantenha execução e sintaxe simples. Deixando bem claro onde o bloco começa e termina e qual tipo de laço estão utilizando.
-- Laço condicional simples: SE condição ENTÃO ... FIM_SE
-- Laço repetição não-determinístico simples: ENQUANTO condição FACA ... FIM_ENQUANTO
-- Laço repetição determinístico simples: REPITA quantidade VEZES ... FIM_REPITA
+- Laço condicional simples: SE condição ENTÃO: ... FIM_SE
+- Laço repetição não-determinístico simples: ENQUANTO condição FACA: ... FIM_ENQUANTO
+- Laço repetição determinístico simples: REPITA quantidade VEZES: ... FIM_REPITA
 5. **Saída e Entrada:** Os comandos de entrada e saída serão curtos, objetivos e intuitivos para o aluno poder interagir e observar os resultados do seu programa. LEIA será usado para o programar capturar o valor de entrada. ESCREVA será usado para o programa escrever resultados de variáveis ou textos no output. 
 6. **Mensagens de erro humanizada:** crianças com espectro autista tendem a ter baixa tolerância á frustração causada por erros opacos e ruidosos. O erro direcionado por um alerta amigável e simples pode diminuir e manter o engajamento sem causar ansiedade (overload) e irritação, até perda de interesse.
 
@@ -68,43 +68,47 @@
 
 **Tabela de tokens:**
 
-| Token | Expressão regular | Exemplo |
+Token | Expressão regular
 |---|---|---|
-|KW_PROGRAMA    	(?i)\bprograma\b	        programa
-|KW_FIM_PROGRAMA	(?i)\bfim_programa\b	    fim_programa
-|KW_CONSTANTE	    (?i)\b(constante|const)\b	constante
-|COMENTARIO     	(//.|(?i)nota:.)	        // comentário ou nota: obs
-|KW_ESCREVA	        (?i)\bescreva\b	            escreva
-|KW_LEIA	        (?i)\bleia\b	            leia
-|OP_SOMA_SUB_MULT	[\+\-\*]	                 +, -, *
-|KW_DIVIDIDO_POR	(?i)\bdividido_por\b	     dividido_por
-|KW_DIV_INTEIRA	    (?i)\bdivisao_inteira\b	     divisao_inteira
-|KW_RESTO_DE	    (?i)\bresto_de\b	            resto_de
-|KW_JUNTE	        (?i)\bjunte\b	                junte
-|KW_IGUAL_A	        (?i)\bigual_a\b	                igual_a
-|KW_DIFERENTE_DE	(?i)\bdiferente_de\b	        diferente_de
-|KW_MAIOR_QUE	    (?i)\bmaior_que\b	            maior_que
-|KW_MENOR_QUE	    (?i)\bmenor_que\b	            menor_que
-|KW_MAIOR_IGUAL	    (?i)\bmaior_ou_igual_a\b	    maior_ou_igual_a
-|KW_MENOR_IGUAL	    (?i)\bmenor_ou_igual_a\b	    menor_ou_igual_a
-|KW_E	            (?i)\be\b	                    e
-|KW_OU	            (?i)\bou\b	                    ou
-|KW_NAO	            (?i)\bnao\b	                    nao
-|KW_SE	            (?i)\bse\b	                    se
-|KW_ENTAO	        (?i)\bentao\b	                entao
-|KW_SENAO	        (?i)\bsenao\b	                senao
-|KW_FIM_SE	        (?i)\bfim_se\b	                fim_se
-|KW_ENQUANTO	    (?i)\benquanto\b	            enquanto
-|KW_FACA	        (?i)\bfaca\b	                faca
-|KW_FIM_ENQUANTO	(?i)\bfim_enquanto\b	        fim_enquanto
-|KW_REPITA	        (?i)\brepita\b	                repita
-|KW_VEZES	        (?i)\bvezes\b	                vezes
-|KW_FIM_REPITA	    (?i)\bfim_repita\b	            fim_repita
-|KW_PARAR	        (?i)\bparar\b	                parar
-|OP_ATRIBUICAO	     =	                             =
-|IDENTIFICADOR	    [a-zA-Z_][a-zA-Z0-9_]*	        idade, total_passos
-|ABRE_FECHA_PAREN	[\(\)]	                        (, )
-|QUEBRA_LINHA	    \n+	                            \n
+KW_PROGRAMA | \bPROGRAMA\b
+KW_FIM_PROGRAMA | \bFIM_PROGRAMA\b
+KW_SE | \bSE\b 
+KW_ENTAO | \bENTAO\b 
+KW_SENAO | \bSENAO\b 
+KW_FIM_SE | \bFIM_SE\b 
+KW_ENQUANTO | \bENQUANTO\b 
+KW_FACA | \bFACA\b 
+KW_FIM_ENQUANTO | \bFIM_ENQUANTO\b 
+KW_REPITA | \bREPITA\b
+KW_VEZES | \bVEZES\b 
+KW_FIM_REPITA | \bFIM_REPITA\b
+KW_PARAR | \bPARAR\b
+KW_CONST | \bCONSTANTE\b
+KW_ESCREVA | \bESCREVA\b 
+KW_LEIA | \bLEIA\b
+L_NUM | [0-9]+(?:\.[0-9]+)? 
+L_TEXTO | "[^"\r\n]*"
+L_VERDADEIRO | \bVERDADE\b
+L_FALSO | \bFALSO\b 
+ID | \b(?!(?:RESERVADAS)\b)[a-zA-Z_][a-zA-Z0-9_]*
+OPA_ADI | \+
+OPA_SUB | - 
+OPA_MUL | \*
+OPA_DIV | /
+OPA_ATRIBUIR | =
+OPA_RESTO | \bRESTO_DE\b 
+OPR_IGUAL | \bIGUAL_A\b
+OPR_N_IGUAL | \bDIFERENTE_DE\b
+OPR_MENOR_Q | \bMENOR_QUE\b 
+OPR_MAIOR_Q | \bMAIOR_QUE\b 
+OPR_MENOR_IGUAL | \bMENOR_OU_IGUAL\b
+OPR_MAIOR_IGUAL | \bMAIOR_OU_IGUAL\b 
+OPL_E | \bE\b 
+OPL_OU | \bOU\b
+OPL_N | \bNAO\b 
+COMENTAR | \bANOTA\b[^\r\n]*
+NOVA_LINHA | (?:\r?\n[ \t]*)+ 
+
 
 ## 4. Rascunho da gramática e exemplos-alvo
 

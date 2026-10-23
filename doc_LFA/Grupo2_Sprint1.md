@@ -68,8 +68,8 @@
 
 **Tabela de tokens:**
 
-Token | Expressão regular
-|---|---|---|
+Token | Expressão regular 
+|---|---|
 KW_PROGRAMA | \bPROGRAMA\b
 KW_FIM_PROGRAMA | \bFIM_PROGRAMA\b
 KW_SE | \bSE\b 
@@ -108,6 +108,7 @@ OPL_OU | \bOU\b
 OPL_N | \bNAO\b 
 COMENTAR | \bANOTA\b[^\r\n]*
 NOVA_LINHA | (?:\r?\n[ \t]*)+ 
+
 
 
 ## 4. Rascunho da gramática e exemplos-alvo

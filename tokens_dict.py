@@ -92,6 +92,30 @@ _IDENTIFICADOR = {
     "ID": rf"\b(?!(?:{RESERVADAS})\b)[{_LETRAS}_][{_LETRAS}0-9_]*",
 }
 
+# Tokens para identificar erros léxicos
+# O Regex de ERRO_LETRA_ACENTUADA precisa dos ACENTOS para identificar o erro com letras acentuadas
+# Esses erros além de identificarem erros comuns, como um nome de váriavel errado, Possui erros identificando símbolos comuns de outras linguagem de programação
+# Assim dando possibilidade de reportar ao aluno qual símbolo correto utilizar
+_ACENTOS = "À-ÖØ-öø-ÿ"
+
+_ERROS_LEXICOS = {
+    "ERRO_VAR_COM_NUM": rf"[0-9]+(?:\.[0-9]+)?[{_LETRAS}_][{_LETRAS}0-9_]*",
+    "ERRO_NUMERO_INCOMPLETO": r"[0-9]+(?:\.[0-9]+){2,}|[0-9]+\.(?![0-9])|\.[0-9]+", 
+    "ERRO_DECIMAL_VIRGULA": r"[0-9]+,[0-9]+",
+    "ERRO_LETRA_ACENTUADA": rf"(?=[{_LETRAS}0-9_]*[{_ACENTOS}])[{_LETRAS}_{_ACENTOS}][{_LETRAS}0-9_{_ACENTOS}]*",
+    "ERRO_TEXTO_ABERTO": r'"[^"\r\n]*', 
+    "ERRO_ASPAS_SIMPLES": r"['‘’][^'‘’\r\n]*['‘’]?",
+    "ERRO_COMPARADOR_SIMBOLO": r"==|!=|<>|<=|>=|=<|=>|<|>", 
+    "ERRO_LOGICO_SIMBOLO": r"&&|\|\||[&|!]",
+    "ERRO_RESTO_SIMBOLO": r"%",
+    "ERRO_ATRIBUICAO_COMPOSTA": r"\+\+|--|[+\-*/]=",
+    "ERRO_FIM_SIMBOLO": r";",
+    "ERRO_BLOCO_SIMBOLO": r"[{}]",
+    "ERRO_COLCHETES_SIMBOLO": r"[\[\]]",
+    "ERRO_COMENTARIO_SIMBOLO": r"#[^\r\n]*|//[^\r\n]*|/\*[^\r\n]*",
+    "ERRO": r".",
+}
+
 
 # DICIONÁRIO PRINCIPAL: categoria -> token: regex
 TOKENS = {
@@ -104,6 +128,7 @@ TOKENS = {
     "ATRIBUICAO":             _ATRIBUICAO,
     "DELIMITADORES":          _DELIMITADORES,
     "OUTROS":                 _OUTROS,
+    "ERROS_LEXICOS":          _ERROS_LEXICOS,
 }
 
 # token -> categoria para análise sintática

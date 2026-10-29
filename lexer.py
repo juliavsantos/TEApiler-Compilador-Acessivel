@@ -1,6 +1,7 @@
 import re
 from typing import NamedTuple
 from tokens_dict import TOKENS, CATEGORIA_DO_TOKEN
+import errors_lexer
 
 
 # Analisador léxico mínimo, só para testar a tabela.
@@ -42,6 +43,8 @@ def tokenizar(codigo):
             if m and m.end() > pos and (melhor is None or m.end() > melhor[1]):
                 melhor = (nome, m.end())
 
+        # Caso encontre um erro inesperado, não mapeado nos tokens de erro
+        # Associe token a "ERRO" generico e continue a tokenizacao
         if melhor is None:
             nome, fim = "ERRO", pos + 1
         else:
@@ -62,6 +65,9 @@ def tokenizar(codigo):
 
 
 def imprimir(tokens):
-    print(f"{'LINHA':<6}{'CATEGORIA':<25}{'TOKEN':<18}LEXEMA")
+    print(f"{'LINHA':<6}{'CATEGORIA':<25}{'TOKEN':<25}LEXEMA")
     for t in tokens:
-        print(f"{t.linha:<6}{t.categoria:<25}{t.token:<18}{t.lexema!r}")
+        print(f"{t.linha:<6}{t.categoria:<25}{t.token:<25}{t.lexema!r}")
+
+        if t.token in TOKENS["ERROS_LEXICOS"]:
+            print(f"ERRO na linha {t.linha}: {errors_lexer.formatar_mensagem(t)}")

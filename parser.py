@@ -21,7 +21,7 @@ Gramática (EBNF) implementada:
 Uma instrução por linha (QUEBRA_LINHA termina o comando).
 """
 
-from lexer import RESERVADAS
+from tokens_dict import RESERVADAS
 from errors_parser import ErroParser
 
 
@@ -52,7 +52,7 @@ class No:
     def __init__(self, tipo, tok, **campos):
         self.tipo = tipo
         self.linha = tok.linha
-        self.coluna = tok.coluna
+        self.coluna = getattr(tok, "coluna", None)
         self.__dict__.update(campos)
 
     def para_dict(self):

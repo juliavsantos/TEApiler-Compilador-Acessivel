@@ -15,9 +15,9 @@ if pasta_raiz not in sys.path:
 
 # Aqui a gente importa o analisador da TEA Language
 try:
-    from lexer import tokenizar
-    import errors_lexer
-    from tokens_dict import TOKENS
+    from ..src.compilador.lexer import tokenizar
+    from ..src.tratamento_erros import errors_lexer
+    from ..src.estrutura_compilador.tokens_dict import TOKENS
 except Exception as e:
     tokenizar = None
     errors_lexer = None

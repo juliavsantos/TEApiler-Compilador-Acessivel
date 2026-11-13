@@ -21,9 +21,8 @@ Gramática (EBNF) implementada:
 Uma instrução por linha (QUEBRA_LINHA termina o comando).
 """
 
-from lexer import RESERVADAS
-from errors_parser import ErroParser
-
+from ..estrutura_compilador.tokens_dict import RESERVADAS
+from ..tratamento_erros.errors_parser import ErroParser
 
 RESERVADAS_SET = set(RESERVADAS.split("|"))
 
@@ -52,7 +51,6 @@ class No:
     def __init__(self, tipo, tok, **campos):
         self.tipo = tipo
         self.linha = tok.linha
-        self.coluna = tok.coluna
         self.__dict__.update(campos)
 
     def para_dict(self):
@@ -67,7 +65,7 @@ class No:
         d.update({
             k: conv(v)
             for k, v in self.__dict__.items()
-            if k not in ("tipo", "linha", "coluna")
+            if k not in ("tipo", "linha")
         })
 
         return d

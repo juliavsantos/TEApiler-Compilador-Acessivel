@@ -1,7 +1,7 @@
 import re
 from typing import NamedTuple
-from tokens_dict import TOKENS, CATEGORIA_DO_TOKEN
-import errors_lexer
+from ..estrutura_compilador.tokens_dict import TOKENS, CATEGORIA_DO_TOKEN
+from ..tratamento_erros import errors_lexer
 
 
 # Analisador léxico mínimo, só para testar a tabela.

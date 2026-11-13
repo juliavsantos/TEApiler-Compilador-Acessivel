@@ -23,6 +23,14 @@ except Exception as e:
     errors_lexer = None
     TOKENS = None
     print(f"Aviso ao carregar o lexer: {e}")
+try:
+    from parser import analisar_sintaxe
+    from errors_parser import ErroParser, reportar_erro_sintatico
+except Exception as e:
+    analisar_sintaxe = None
+    ErroParser = None
+    reportar_erro_sintatico = None
+    print(f"Aviso ao carregar o parser: {e}")
 
 
 # Exemplos prontos da própria documentação da TL para carregar no editor
@@ -686,7 +694,16 @@ class TelaEditor(ctk.CTkFrame):
         )
 
     def inserir_bloco(self, texto):
-        # Insere o bloco escolhido na posição onde o cursor estiver
+        campo = self.campo_codigo
+
+        # Blocos comuns entram antes do FIM_PROGRAMA, nunca depois
+        if not texto.startswith("PROGRAMA"):
+            fim = campo.search("FIM_PROGRAMA", "1.0", "end")
+            if fim and campo.compare("insert", ">=", fim):
+                campo.mark_set("insert", f"{fim} linestart")
+        # Se o cursor não está no começo de uma linha, começa uma linha nova
+        if self.campo_codigo.index("insert") != self.campo_codigo.index("insert linestart"):
+            self.campo_codigo.insert("insert", "\n")
         self.campo_codigo.insert("insert", texto)
         self.campo_codigo.focus_set()
         self.ao_digitar()
@@ -724,27 +741,29 @@ class TelaEditor(ctk.CTkFrame):
             )
 
     def verificar_codigo(self):
-        # Pega o código digitado e passa pelo analisador léxico da TL
-        codigo = self.campo_codigo.get("1.0", "end-1c").strip()
-
-        if not codigo:
-            self.mostrar_feedback("O editor está vazio. Digite algo ou use um exemplo pronto!", tipo="normal")
-            return
-
-        if tokenizar is None:
-            self.mostrar_feedback("Não foi possível carregar o arquivo lexer.py.", tipo="atencao")
-            return
+        print("BOTÃO CLICADO!")
 
         try:
-            tokens = tokenizar(codigo)
+            codigo = self.campo_codigo.get("1.0", "end-1c").strip()
+            print("Código recebido:", repr(codigo))
+
         except Exception as e:
-            self.mostrar_feedback(f"Aconteceu algo inesperado ao ler o código: {e}", tipo="atencao")
+            print("ERRO AO LER O EDITOR:", e)
             return
 
         # Procura se existe algum erro léxico nos tokens encontrados
         erros_encontrados = []
         tokens_validos = []
 
+        try:
+            tokens = tokenizar(codigo)
+        except Exception as e:
+            self.mostrar_feedback(
+                f"Erro ao analisar o código: {e}",
+                tipo="atencao"
+            )
+            return
+        
         for t in tokens:
             if t.token in TOKENS.get("ERROS_LEXICOS", {}):
                 mensagem = errors_lexer.formatar_mensagem(t)
@@ -762,17 +781,36 @@ class TelaEditor(ctk.CTkFrame):
             )
             self.mostrar_feedback(msg, tipo="atencao")
         else:
-            # Se não teve erro, parabeniza e lista os tokens de forma clara
-            resumo_tokens = [f"'{t.lexema}' ({t.categoria})" for t in tokens_validos[:12]]
-            mais = f"... e mais {len(tokens_validos) - 12} tokens." if len(tokens_validos) > 12 else ""
-            msg = (
-                "Parabéns! O seu código foi analisado e está certinho, sem nenhum erro de escrita!\n\n"
-                f"Palavras identificadas: {', '.join(resumo_tokens)} {mais}"
-            )
-            self.mostrar_feedback(msg, tipo="sucesso")
+            if analisar_sintaxe is None:
+                self.mostrar_feedback(
+                    "Não foi possível carregar o analisador sintático.",
+                    tipo="atencao"
+                )
+                return
+
+            try:
+                ast, quantidade_nos = analisar_sintaxe(tokens)
+
+                msg = (
+                    "Parabéns! Seu código está correto!\n\n"
+                    "A análise léxica foi concluída sem erros.\n"
+                    "A análise sintática também foi concluída sem erros."
+                )
+
+                self.mostrar_feedback(msg, tipo="sucesso")
+
+            except ErroParser as erro:
+                msg = (
+                    "Encontramos algo para você corrigir:\n\n"
+                    + reportar_erro_sintatico(erro)
+                    + "\n\nDica: confira a estrutura dos comandos e tente novamente."
+                )
+
+                self.mostrar_feedback(msg, tipo="atencao")
 
 
 # Ponto de partida do aplicativo
 if __name__ == "__main__":
     app = IDE_TEALanguage()
     app.mainloop()
+

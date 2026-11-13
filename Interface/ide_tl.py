@@ -24,8 +24,8 @@ except Exception as e:
     TOKENS = None
     print(f"Aviso ao carregar o lexer: {e}")
 try:
-    from parser import analisar_sintaxe
-    from errors_parser import ErroParser, reportar_erro_sintatico
+    from ..src.compilador.parser import analisar_sintaxe
+    from ..src.tratamento_erros.errors_parser import ErroParser, reportar_erro_sintatico
 except Exception as e:
     analisar_sintaxe = None
     ErroParser = None

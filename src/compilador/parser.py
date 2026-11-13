@@ -21,14 +21,8 @@ Gramática (EBNF) implementada:
 Uma instrução por linha (QUEBRA_LINHA termina o comando).
 """
 
-<<<<<<< HEAD:src/compilador/parser.py
 from ..estrutura_compilador.tokens_dict import RESERVADAS
 from ..tratamento_erros.errors_parser import ErroParser
-=======
-from tokens_dict import RESERVADAS
-from errors_parser import ErroParser
-
->>>>>>> 719f417c69c8ced3d1c66c90c6458699657d81ae:parser.py
 
 RESERVADAS_SET = set(RESERVADAS.split("|"))
 
@@ -57,10 +51,6 @@ class No:
     def __init__(self, tipo, tok, **campos):
         self.tipo = tipo
         self.linha = tok.linha
-<<<<<<< HEAD:src/compilador/parser.py
-=======
-        self.coluna = getattr(tok, "coluna", 1)
->>>>>>> 719f417c69c8ced3d1c66c90c6458699657d81ae:parser.py
         self.__dict__.update(campos)
 
     def para_dict(self):

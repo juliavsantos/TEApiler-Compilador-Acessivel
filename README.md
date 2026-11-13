@@ -17,3 +17,7 @@ Em conjunto com esse projeto prático, também está sendo escrito um artigo par
 
 O prototipo do compilador esta na pasta Interface, para teste rode:
 python3 iniciar_ide.py
+
+<br>
+Link Blog do Projeto: https://lex-scan-lab.base44.app <br>
+Link Video do Projeto: 

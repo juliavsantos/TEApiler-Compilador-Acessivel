@@ -29,7 +29,7 @@ def reportar_erro_sintatico(erro):
         local = "Localização desconhecida"
 
     # Obtém o lexema do token que causou o erro.
-    lexema = getattr(erro.token, "lexema", "")
+    lexema = getattr(erro.token, "lexema", "").strip()
 
     mensagem = f"Erro sintático [{local}]: {erro.mensagem}"
 

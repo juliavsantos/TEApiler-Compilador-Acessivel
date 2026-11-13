@@ -21,8 +21,14 @@ Gramática (EBNF) implementada:
 Uma instrução por linha (QUEBRA_LINHA termina o comando).
 """
 
+<<<<<<< HEAD:src/compilador/parser.py
 from ..estrutura_compilador.tokens_dict import RESERVADAS
 from ..tratamento_erros.errors_parser import ErroParser
+=======
+from tokens_dict import RESERVADAS
+from errors_parser import ErroParser
+
+>>>>>>> 719f417c69c8ced3d1c66c90c6458699657d81ae:parser.py
 
 RESERVADAS_SET = set(RESERVADAS.split("|"))
 
@@ -51,6 +57,10 @@ class No:
     def __init__(self, tipo, tok, **campos):
         self.tipo = tipo
         self.linha = tok.linha
+<<<<<<< HEAD:src/compilador/parser.py
+=======
+        self.coluna = getattr(tok, "coluna", 1)
+>>>>>>> 719f417c69c8ced3d1c66c90c6458699657d81ae:parser.py
         self.__dict__.update(campos)
 
     def para_dict(self):
@@ -150,6 +160,7 @@ class Parser:
 
         self.avancar()
 
+   
     # ---- estrutura ----
 
     def programa(self):
@@ -170,11 +181,28 @@ class Parser:
                 f"mas encontrei {descrever(self.atual)}."
             )
 
+        # Consome o encerramento do programa
         self.avancar()
         self.pular_linhas()
 
+        # Verifica se existe outro PROGRAMA ou FIM_PROGRAMA
+        if self.e("KW_PROGRAMA"):
+            self.erro(
+                "Seu programa já foi iniciado! "
+                "Não escreva PROGRAMA novamente."
+            )
+
+        if self.e("KW_FIM_PROGRAMA"):
+            self.erro(
+                "Seu programa já foi encerrado! "
+                "Não escreva FIM_PROGRAMA novamente."
+            )
+
         if not self.e("EOF"):
-            self.erro("Depois de FIM_PROGRAMA não pode haver mais nada.")
+            self.erro(
+                "Seu programa já foi encerrado. "
+                "Não é permitido escrever comandos depois de FIM_PROGRAMA."
+            )
 
         return self.no("Programa", ini, corpo=corpo)
 
@@ -183,10 +211,18 @@ class Parser:
         self.pular_linhas()
 
         while not self.e(*FIM_BLOCO):
+
+            if self.e("KW_PROGRAMA"):
+                self.erro(
+                    "Seu programa já foi iniciado! "
+                    "Não escreva PROGRAMA novamente."
+                )
+
             lista.append(self.comando())
             self.fim_linha()
 
         return lista
+
 
     def comando(self):
         t = self.atual
@@ -198,6 +234,13 @@ class Parser:
                         f'"{t.lexema}" parece a palavra reservada '
                         f'{t.lexema.upper()}. Escreva em letras maiúsculas.'
                     )
+
+                for r in sorted(RESERVADAS_SET, key=len, reverse=True):
+                    if len(r) >= 4 and t.lexema.startswith(r) and len(t.lexema) > len(r):
+                        self.erro(
+                            f'"{t.lexema}" parece a palavra {r} grudada em outra palavra. '
+                            f'Separe com um espaço ou comece uma nova linha.'
+                        )
 
                 self.erro(
                     f'Depois do nome "{t.lexema}" eu esperava o sinal = '

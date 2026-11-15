@@ -15,17 +15,17 @@ if pasta_raiz not in sys.path:
 
 # Aqui a gente importa o analisador da TEA Language
 try:
-    from ..src.compilador.lexer import tokenizar
-    from ..src.tratamento_erros import errors_lexer
-    from ..src.estrutura_compilador.tokens_dict import TOKENS
+    from src.compilador.lexer import tokenizar
+    from src.tratamento_erros import errors_lexer
+    from src.estrutura_compilador.tokens_dict import TOKENS
 except Exception as e:
     tokenizar = None
     errors_lexer = None
     TOKENS = None
     print(f"Aviso ao carregar o lexer: {e}")
 try:
-    from ..src.compilador.parser import analisar_sintaxe
-    from ..src.tratamento_erros.errors_parser import ErroParser, reportar_erro_sintatico
+    from src.compilador.parser import analisar_sintaxe
+    from src.tratamento_erros.errors_parser import ErroParser, reportar_erro_sintatico
 except Exception as e:
     analisar_sintaxe = None
     ErroParser = None

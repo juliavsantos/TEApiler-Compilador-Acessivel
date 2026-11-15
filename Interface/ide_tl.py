@@ -32,6 +32,13 @@ except Exception as e:
     reportar_erro_sintatico = None
     print(f"Aviso ao carregar o parser: {e}")
 
+# Aqui a gente importa a janela que desenha a árvore (AST) e os percursos
+try:
+    from visualizador_ast import JanelaArvoreAST
+except Exception as e:
+    JanelaArvoreAST = None
+    print(f"Aviso ao carregar o visualizador da árvore: {e}")
+
 
 # Exemplos prontos da própria documentação da TL para carregar no editor
 EXEMPLOS_TL = {
@@ -344,6 +351,20 @@ class TelaEditor(ctk.CTkFrame):
             command=self.verificar_codigo
         )
         btn_verificar.pack(side="right", padx=(10, 10))
+
+        # Botão para ver a árvore sintática (AST) e os percursos
+        btn_arvore = ctk.CTkButton(
+            topo,
+            text="🌳 Árvore",
+            width=96,
+            height=34,
+            corner_radius=8,
+            fg_color=("gray80", "#334155"),
+            hover_color=("gray70", "#475569"),
+            text_color=("black", "white"),
+            command=self.ver_arvore
+        )
+        btn_arvore.pack(side="right", padx=5)
 
         # Botão para limpar o código
         btn_limpar = ctk.CTkButton(
@@ -809,8 +830,55 @@ class TelaEditor(ctk.CTkFrame):
                 self.mostrar_feedback(msg, tipo="atencao")
 
 
+    def ver_arvore(self):
+        # Abre a janela que mostra a AST do código que está no editor
+        if JanelaArvoreAST is None or tokenizar is None or analisar_sintaxe is None:
+            self.mostrar_feedback(
+                "Não foi possível carregar o visualizador da árvore.\n"
+                "Veja a mensagem 'Aviso ao carregar...' no terminal.",
+                tipo="atencao"
+            )
+            return
+
+        codigo = self.campo_codigo.get("1.0", "end-1c").strip()
+        if not codigo:
+            self.mostrar_feedback(
+                "Escreva um código (ou escolha um exemplo) para ver a árvore.",
+                tipo="atencao"
+            )
+            return
+
+        # A árvore só existe se o código passar na análise léxica e sintática
+        tokens = tokenizar(codigo)
+        if any(t.token in TOKENS.get("ERROS_LEXICOS", {}) for t in tokens):
+            self.mostrar_feedback(
+                "Ainda tem uma palavra para ajustar antes de montar a árvore.\n"
+                "Clique em 'Verificar Código' para ver as dicas.",
+                tipo="atencao"
+            )
+            return
+
+        try:
+            ast, quantidade_nos = analisar_sintaxe(tokens)
+        except ErroParser as erro:
+            self.mostrar_feedback(
+                "Para montar a árvore, o código precisa estar com a estrutura certinha:\n\n"
+                + reportar_erro_sintatico(erro),
+                tipo="atencao"
+            )
+            return
+
+        # Se já tinha uma janela da árvore aberta, fecha e abre a nova
+        antiga = getattr(self, "janela_arvore", None)
+        if antiga is not None and antiga.winfo_exists():
+            antiga.fechar()
+
+        self.janela_arvore = JanelaArvoreAST(
+            self.controller, ast.para_dict(), quantidade_nos, codigo
+        )
+
+
 # Ponto de partida do aplicativo
 if __name__ == "__main__":
     app = IDE_TEALanguage()
     app.mainloop()
-

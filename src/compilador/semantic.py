@@ -1,7 +1,7 @@
 from dataclasses import dataclass
 
 from ..tratamento_erros.errors_semantic import criar_aviso, criar_erro
-from ..estrutura_compilador.symbol_table import Categoria, TabelaSimbolos, DESCONHECIDO, TIPO_NUMERO, TIPO_TEXTO, TIPO_LOGICO
+from ..estrutura_compilador.symbol_table import Categoria, TabelaSimbolo, DESCONHECIDO, TIPO_NUMERO, TIPO_TEXTO, TIPO_LOGICO
 from ..compilador.parser import RESERVADAS_SET
 
 
@@ -62,7 +62,7 @@ def termina(bloco):
 @dataclass
 class ResultadoSemantico:
     ast: object
-    tabela: TabelaSimbolos
+    tabela: TabelaSimbolo
     avisos: list
     erros: list
 
@@ -74,7 +74,7 @@ class ResultadoSemantico:
 class AnalisadorSemantico:
     def __init__(self, parar_no_primeiro_erro=True):
         self.parar = parar_no_primeiro_erro
-        self.tabela = TabelaSimbolos()
+        self.tabela = TabelaSimbolo()
         self.erros = []
         self.avisos = []
         self.nivel_laco = 0
@@ -95,8 +95,13 @@ class AnalisadorSemantico:
             raise erro
         self.erros.append(erro)
 
-    def _aviso(self, codigo, no, **dados):
-        self.avisos.append(criar_aviso(codigo, no, **dados))
+    def aviso(self, codigo, no, **dados):
+        aviso = criar_aviso(codigo, no, **dados)
+
+        if self.parar:
+            raise aviso
+        
+        self.avisos.append(aviso)
 
 
 
@@ -260,8 +265,10 @@ class AnalisadorSemantico:
             return
 
         condicao = no.condicao
+        print(condicao.tipo)
+        print(condicao.valor)
 
-        if condicao.tipo == "logico" and condicao.valor is True:
+        if condicao.tipo == "Logico" and condicao.valor is True:
             self.aviso("AVISO_LOOP_INFINITO", no)
             return
         
@@ -272,18 +279,18 @@ class AnalisadorSemantico:
 
     def laco(self, no, rotulo, corpo):
         if not corpo:
-            self._aviso("AVISO_BLOCO_VAZIO", no)
+            self.aviso("AVISO_BLOCO_VAZIO", no)
         self.estruturas.append((rotulo, no.linha))
         self.nivel_laco += 1
         antes = set(self.definidas)
-        self._bloco(corpo)
+        self.bloco(corpo)
         self.definidas = antes             # o corpo pode não executar nenhuma vez
         self.nivel_laco -= 1
         self.estruturas.pop()
 
     def visitar_Enquanto(self, no):
         tipo = self.visitar(no.condicao)
-        self.checar_condicao(no.condicao, tipo, "ENQUANTO")
+        self.checar_condicao(tipo)
         self.avisar_loop_infinito(no)
         self.laco(no, "ENQUANTO", no.corpo)
 

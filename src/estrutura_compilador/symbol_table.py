@@ -41,7 +41,7 @@ class TabelaSimbolo:
     # Declarando símbolo na tabela
     def declarar(self, nome, categoria, linha, tipo=DESCONHECIDO, constante=None):
         if nome in self.simbolos_tab:
-            raise SimboloDeclarado(self.simbolos[nome])
+            raise SimboloDeclarado(self.simbolos_tab[nome])
 
         simbolo = Simbolo(nome, categoria, linha, tipo, constante)
         self.simbolos_tab[nome] = simbolo
@@ -51,7 +51,7 @@ class TabelaSimbolo:
     # Buscando ID na tabela de símbolos
     # Retorna None se ID não existir
     def buscar(self, nome):
-        return self.simbolos.get(nome)
+        return self.simbolos_tab.get(nome)
 
     # Retorna todos os IDs na tabela em uma lista
     def todos_simbolos(self):

@@ -9,7 +9,7 @@ pasta_interface = os.path.join(os.path.dirname(os.path.abspath(__file__)), "Inte
 sys.path.insert(0, pasta_interface)
 
 # Inicia o aplicativo da IDE
-from ide_tl import IDE_TEALanguage
+from Interface.ide_tl import IDE_TEALanguage
 
 if __name__ == "__main__":
     print("Iniciando a IDE da TEA Language (TL)...")

@@ -20,4 +20,4 @@ python3 iniciar_ide.py
 
 <br>
 Link Blog do Projeto: https://lex-scan-lab.base44.app <br>
-Link Video do Projeto: 
+Link Video do Projeto: https://www.youtube.com/watch?v=TfD6jlNxqRs <br>

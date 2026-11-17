@@ -31,6 +31,16 @@ except Exception as e:
     ErroParser = None
     reportar_erro_sintatico = None
     print(f"Aviso ao carregar o parser: {e}")
+try:
+    from src.compilador.semantic import analisar_semantica
+    from src.tratamento_erros.errors_semantic import ErroSemantico, Aviso,reportar_erro, reportar_aviso
+except Exception as e:
+    analisar_semantica = None
+    ErroSemantico = None
+    reportar_erro = None
+    reportar_aviso = None
+    print(f"Aviso ao carregar o semantico: {e}")
+
 
 # Aqui a gente importa a janela que desenha a árvore (AST) e os percursos
 try:
@@ -809,17 +819,15 @@ class TelaEditor(ctk.CTkFrame):
                 )
                 return
 
-            try:
-                ast, quantidade_nos = analisar_sintaxe(tokens)
-
-                msg = (
-                    "Parabéns! Seu código está correto!\n\n"
-                    "A análise léxica foi concluída sem erros.\n"
-                    "A análise sintática também foi concluída sem erros."
+            if analisar_semantica is None:
+                self.mostrar_feedback(
+                    "Não foi possível carregar o analisador semântico.",
+                    tipo="atencao"
                 )
+                return
 
-                self.mostrar_feedback(msg, tipo="sucesso")
-
+            try:
+                ast, _ = analisar_sintaxe(tokens)
             except ErroParser as erro:
                 msg = (
                     "Encontramos algo para você corrigir:\n\n"
@@ -828,6 +836,42 @@ class TelaEditor(ctk.CTkFrame):
                 )
 
                 self.mostrar_feedback(msg, tipo="atencao")
+
+            # Testando analise semantica
+            try:
+                analisar_semantica(ast)
+
+                msg = (
+                    "Parabéns! Seu código está correto!\n\n"
+                    "A análise léxica foi concluída sem erros.\n"
+                    "A análise sintática foi concluída sem erros.\n"
+                    "A Análise semântica foi concluída sem erros.\n"
+                )
+
+                self.mostrar_feedback(msg, tipo="sucesso")
+            # Achando erro semantico
+            except ErroSemantico as erro:
+                print(erro)
+
+                msg = (
+                    "Encontramos algo para você corrigir:\n\n"
+                    + reportar_erro(erro)
+                    + "\n\nDica: confira a estrutura dos comandos e tente novamente."
+                )
+
+                self.mostrar_feedback(msg, tipo="atencao")
+            # Achando aviso semantico
+            except Aviso as aviso:
+                print(aviso)
+                
+                msg = (
+                    "Encontramos algo para você corrigir:\n\n"
+                    + reportar_aviso(aviso)
+                    + "\n\nDica: confira a estrutura dos comandos e tente novamente."
+                )
+
+                self.mostrar_feedback(msg, tipo="atencao")
+
 
 
     def ver_arvore(self):
@@ -876,9 +920,3 @@ class TelaEditor(ctk.CTkFrame):
         self.janela_arvore = JanelaArvoreAST(
             self.controller, ast.para_dict(), quantidade_nos, codigo
         )
-
-
-# Ponto de partida do aplicativo
-if __name__ == "__main__":
-    app = IDE_TEALanguage()
-    app.mainloop()

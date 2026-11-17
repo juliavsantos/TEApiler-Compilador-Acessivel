@@ -488,4 +488,337 @@ class JanelaArvoreAST(ctk.CTkToplevel):
         sb_y = tk.Scrollbar(area, orient="vertical", command=self.canvas.yview)
         sb_y.grid(row=0, column=1, sticky="ns")
         sb_x = tk.Scrollbar(area, orient="horizontal", command=self.canvas.xview)
-        sb_x.grid(row=1, column=0,)
+        sb_x.grid(row=1, column=0, sticky="ew")
+        self.canvas.configure(xscrollcommand=sb_x.set, yscrollcommand=sb_y.set)
+
+        self.canvas.bind("<Configure>", self._ao_redimensionar)
+        self.canvas.bind("<MouseWheel>", self._roda_vertical)
+        self.canvas.bind("<Shift-MouseWheel>", self._roda_horizontal)
+        self.canvas.bind("<Button-4>", lambda e: self.canvas.yview_scroll(-1, "units"))
+        self.canvas.bind("<Button-5>", lambda e: self.canvas.yview_scroll(1, "units"))
+
+        # Legenda das cores
+        legenda = ctk.CTkFrame(self, fg_color="transparent")
+        legenda.pack(fill="x", padx=16, pady=(0, 2))
+        ctk.CTkLabel(legenda, text="Cores:", font=ctk.CTkFont(size=12),
+                     text_color=("gray40", "#94a3b8")).pack(side="left", padx=(0, 8))
+        for chave, nome in LEGENDA:
+            cor_claro = PALETAS["Light"][chave][1]
+            cor_escuro = PALETAS["Dark"][chave][1]
+            ctk.CTkLabel(
+                legenda, text=f"● {nome}", font=ctk.CTkFont(size=12, weight="bold"),
+                text_color=(cor_claro, cor_escuro),
+            ).pack(side="left", padx=8)
+
+        # Painel inferior: explicação do percurso + ordem de visita
+        painel = ctk.CTkFrame(self, corner_radius=10, fg_color=cinza)
+        painel.pack(fill="x", padx=12, pady=(4, 10))
+
+        self.lbl_titulo_modo = ctk.CTkLabel(
+            painel, text="", anchor="w", font=ctk.CTkFont(size=14, weight="bold"),
+            text_color=("#d97706", "#fbbf24"),
+        )
+        self.lbl_titulo_modo.pack(fill="x", padx=14, pady=(10, 0))
+
+        self.lbl_explica = ctk.CTkLabel(
+            painel, text="", anchor="w", justify="left", wraplength=1000,
+            font=ctk.CTkFont(size=13), text_color=("gray20", "#cbd5e1"),
+        )
+        self.lbl_explica.pack(fill="x", padx=14, pady=(2, 6))
+
+        self.lbl_status = ctk.CTkLabel(
+            painel, text="", anchor="w", font=ctk.CTkFont(size=13, weight="bold"),
+            text_color=("#2563eb", "#93c5fd"),
+        )
+        self.lbl_status.pack(fill="x", padx=14, pady=(0, 4))
+
+        moldura_seq = ctk.CTkFrame(painel, corner_radius=8, fg_color=("gray85", "#262b33"))
+        moldura_seq.pack(fill="x", padx=12, pady=(0, 12))
+        moldura_seq.grid_columnconfigure(0, weight=1)
+        self.texto_seq = tk.Text(
+            moldura_seq, height=3, wrap="word", bd=0, highlightthickness=0,
+            padx=10, pady=8, cursor="arrow", takefocus=0,
+        )
+        self.texto_seq.grid(row=0, column=0, sticky="ew", padx=(2, 0), pady=2)
+        sb_seq = tk.Scrollbar(moldura_seq, orient="vertical", command=self.texto_seq.yview)
+        sb_seq.grid(row=0, column=1, sticky="ns")
+        self.texto_seq.configure(yscrollcommand=sb_seq.set)
+
+        # Ajusta a quebra de linha do texto quando a janela muda de tamanho
+        self.bind("<Configure>", self._ao_redimensionar_janela)
+
+    # ----- Ajudas de tema ----------------------------------------------------
+    def _paleta(self):
+        return PALETAS["Dark" if ctk.get_appearance_mode() == "Dark" else "Light"]
+
+    def _ao_redimensionar_janela(self, event):
+        if event.widget is self:
+            self.lbl_explica.configure(wraplength=max(300, event.width - 60))
+
+    # ----- Zoom e rolagem ----------------------------------------------------
+    def zoom(self, fator):
+        self.escala = max(0.4, min(2.2, self.escala * fator))
+        self.desenhar()
+
+    def ajustar_a_janela(self):
+        self.update_idletasks()
+        cw = max(200, self.canvas.winfo_width() - 24)
+        ch = max(150, self.canvas.winfo_height() - 12)
+        self.escala = max(0.45, min(1.3, cw / self.largura, ch / self.altura))
+        self.desenhar()
+
+    def _roda_vertical(self, event):
+        self.canvas.yview_scroll(-1 if event.delta > 0 else 1, "units")
+
+    def _roda_horizontal(self, event):
+        self.canvas.xview_scroll(-1 if event.delta > 0 else 1, "units")
+
+    def _ao_redimensionar(self, event):
+        # Espera um pouquinho para não redesenhar a cada pixel arrastado
+        if self._job_redesenho:
+            self.after_cancel(self._job_redesenho)
+        self._job_redesenho = self.after(60, self.desenhar)
+
+    # ----- Desenho -----------------------------------------------------------
+    def _ret_arredondado(self, x1, y1, x2, y2, r, **kw):
+        # Pontos repetidos deixam as retas retas e arredondam só os cantos
+        pontos = [
+            x1 + r, y1, x1 + r, y1, x2 - r, y1, x2 - r, y1, x2, y1, x2, y1 + r,
+            x2, y1 + r, x2, y2 - r, x2, y2 - r, x2, y2, x2 - r, y2, x2 - r, y2,
+            x1 + r, y2, x1 + r, y2, x1, y2, x1, y2 - r, x1, y2 - r, x1, y1 + r,
+            x1, y1 + r, x1, y1,
+        ]
+        return self.canvas.create_polygon(pontos, smooth=True, **kw)
+
+    def desenhar(self):
+        self._job_redesenho = None
+        c = self.canvas
+        p = self._paleta()
+        s = self.escala
+        c.delete("all")
+        c.configure(bg=p["fundo"])
+
+        larg_vis = max(c.winfo_width(), 100)
+        alt_vis = max(c.winfo_height(), 100)
+        larg_desenho, alt_desenho = self.largura * s, self.altura * s
+        # Centraliza quando a árvore é menor que a janela
+        ox = max(0, (larg_vis - larg_desenho) / 2)
+        c.configure(scrollregion=(0, 0, max(larg_desenho, larg_vis), max(alt_desenho, alt_vis)))
+
+        fonte_rot = ("Arial", max(6, round(11 * s)), "bold")
+        fonte_leg = ("Arial", max(5, round(8 * s)))
+        fonte_lig = ("Arial", max(5, round(8 * s)))
+        fonte_num = ("Arial", max(6, round(9 * s)), "bold")
+
+        # 1) Linhas entre os nós (e o nome de cada ligação)
+        for no in self.todos:
+            for nome, f in no.filhos:
+                x1, y1 = ox + no.x * s, (no.y + ALT_NO / 2) * s
+                x2, y2 = ox + f.x * s, (f.y - ALT_NO / 2) * s
+                ym = (y1 + y2) / 2  # altura da "barra" horizontal do cotovelo
+                c.create_line(x1, y1, x1, ym, x2, ym, x2, y2, fill=p["linha"],
+                              width=max(1, 1.5 * s))
+                if nome:
+                    t = c.create_text(x2, (ym + y2) / 2, text=nome,
+                                      fill=p["suave"], font=fonte_lig)
+                    caixa = c.bbox(t)
+                    fundo = c.create_rectangle(caixa[0] - 2, caixa[1], caixa[2] + 2, caixa[3],
+                                               fill=p["fundo"], outline="")
+                    c.tag_lower(fundo, t)
+
+        # 2) Caixinhas dos nós
+        rodando = self.passo > 0
+        for no in self.todos:
+            i = self.indice[id(no)]
+            visitado = rodando and i < self.passo
+            atual = rodando and i == self.passo - 1
+            apagado = rodando and i >= self.passo
+
+            x1, y1 = ox + (no.x - no.larg / 2) * s, (no.y - ALT_NO / 2) * s
+            x2, y2 = ox + (no.x + no.larg / 2) * s, (no.y + ALT_NO / 2) * s
+            cx, cy = (x1 + x2) / 2, (y1 + y2) / 2
+
+            fundo, borda, cor_texto = p[no.categoria]
+            cor_leg = p["suave"]
+            espessura = 2
+            if apagado:
+                fundo, borda, cor_texto = p["painel"], p["linha"], p["suave"]
+                espessura = 1
+            elif visitado:
+                espessura = 3
+
+            if atual:  # anel de destaque em volta do nó da vez
+                self._ret_arredondado(x1 - 5 * s, y1 - 5 * s, x2 + 5 * s, y2 + 5 * s,
+                                      14 * s, fill="", outline=p["destaque"], width=3)
+
+            self._ret_arredondado(x1, y1, x2, y2, 10 * s, fill=fundo, outline=borda,
+                                  width=espessura)
+            c.create_text(cx, cy - 9 * s, text=no.legenda, fill=cor_leg, font=fonte_leg)
+            c.create_text(cx, cy + 8 * s, text=no.rotulo, fill=cor_texto, font=fonte_rot)
+
+            if visitado:  # bolinha com o número da ordem de visita
+                r = 10 * s
+                cor_bola = p["destaque"] if atual else p["badge"]
+                cor_num = p["destaque_texto"] if atual else p["badge_texto"]
+                c.create_oval(x2 - r, y1 - r, x2 + r, y1 + r, fill=cor_bola, outline="")
+                c.create_text(x2, y1, text=str(i + 1), fill=cor_num, font=fonte_num)
+
+    # ----- Percurso ----------------------------------------------------------
+    def _ao_trocar_modo(self, nome):
+        self.parar_reproducao()
+        self.modo = NOMES_MODOS[nome]
+        self.ordem = percurso(self.raiz, self.modo)
+        self.indice = {id(n): i for i, n in enumerate(self.ordem)}
+        self.passo = 0
+        self._atualizar_texto_modo()
+        self.atualizar()
+
+    def _atualizar_texto_modo(self):
+        titulo, explicacao = MODOS[self.modo]
+        self.lbl_titulo_modo.configure(text=titulo)
+        self.lbl_explica.configure(text=explicacao)
+
+    def proximo(self):
+        if self.passo < len(self.ordem):
+            self.passo += 1
+            self.atualizar()
+
+    def anterior(self):
+        self.parar_reproducao()
+        if self.passo > 0:
+            self.passo -= 1
+            self.atualizar()
+
+    def reiniciar(self):
+        self.parar_reproducao()
+        self.passo = 0
+        self.atualizar()
+
+    def alternar_reproducao(self):
+        if self.tocando:
+            self.parar_reproducao()
+            return
+        if self.passo >= len(self.ordem):
+            self.passo = 0
+            self.atualizar()
+        self.tocando = True
+        self.btn_play.configure(text="⏸ Pausar")
+        self._tique()
+
+    def parar_reproducao(self):
+        self.tocando = False
+        if self._job_tique:
+            self.after_cancel(self._job_tique)
+            self._job_tique = None
+        self.btn_play.configure(text="▶ Reproduzir")
+
+    def _tique(self):
+        if not self.tocando:
+            return
+        if self.passo >= len(self.ordem):
+            self.parar_reproducao()
+            return
+        self.proximo()
+        atraso = int(2400 / max(1, self.slider_vel.get()))
+        self._job_tique = self.after(atraso, self._tique)
+
+    # ----- Atualizações da tela ---------------------------------------------
+    def atualizar(self):
+        self.desenhar()
+        self._atualizar_sequencia()
+        self._atualizar_status()
+
+    def _atualizar_status(self):
+        total = len(self.ordem)
+        if self.passo == 0:
+            texto = "Clique em «Próximo ▶» ou «Reproduzir» para começar  (atalhos: ← → e Espaço)"
+        else:
+            no = self.ordem[self.passo - 1]
+            texto = f"Passo {self.passo} de {total}:  visitando  {no.rotulo}  ({no.legenda})"
+            if self.passo == total:
+                texto += "   —   fim do percurso!"
+        self.lbl_status.configure(text=texto)
+
+    def _atualizar_sequencia(self):
+        """Mostra a ordem de visita em texto: 2 → * → 3 → + → 1"""
+        p = self._paleta()
+        t = self.texto_seq
+        t.configure(state="normal", bg="#262b33" if p is PALETAS["Dark"] else "#d9dee5")
+        t.delete("1.0", "end")
+
+        fonte = ("Courier New", 13)
+        t.tag_configure("neutro", foreground=p["texto"], font=fonte)
+        t.tag_configure("feito", foreground=p["texto"], font=fonte)
+        t.tag_configure("futuro", foreground=p["suave"], font=fonte)
+        t.tag_configure("seta", foreground=p["suave"], font=fonte)
+        t.tag_configure("atual", foreground=p["destaque_texto"], background=p["destaque"],
+                        font=("Courier New", 13, "bold"))
+
+        for i, no in enumerate(self.ordem):
+            if i:
+                t.insert("end", "  →  ", "seta")
+            if self.passo == 0:
+                marca = "neutro"
+            elif i == self.passo - 1:
+                marca = "atual"
+            elif i < self.passo:
+                marca = "feito"
+            else:
+                marca = "futuro"
+            t.insert("end", f" {no.rotulo} ", marca)
+
+        faixa = t.tag_ranges("atual")
+        if faixa:
+            t.see(faixa[0])
+        t.configure(state="disabled")
+
+    # ----- Exportar ----------------------------------------------------------
+    def exportar_svg(self):
+        nome_modo = {"pre": "pre-ordem", "em": "em-ordem", "pos": "pos-ordem"}[self.modo]
+        caminho = filedialog.asksaveasfilename(
+            parent=self, defaultextension=".svg", initialfile=f"ast_{nome_modo}.svg",
+            filetypes=[("Imagem SVG", "*.svg")],
+        )
+        if not caminho:
+            return
+        rodape = f"Percurso em {nome_modo}  (os números mostram a ordem de visita)"
+        try:
+            with open(caminho, "w", encoding="utf-8") as arq:
+                arq.write(gerar_svg(self.raiz, self.largura, self.altura, self.ordem, rodape))
+        except OSError as erro:
+            self.lbl_status.configure(text=f"Não foi possível salvar: {erro}")
+            return
+        self.lbl_status.configure(text=f"Imagem salva em: {caminho}")
+
+    def fechar(self):
+        self.parar_reproducao()
+        if self._job_redesenho:
+            self.after_cancel(self._job_redesenho)
+        self.destroy()
+
+
+# ---------------------------------------------------------------------------
+# 9) Rodar sozinho (bom para testar): python Interface/visualizador_ast.py [arquivo]
+# ---------------------------------------------------------------------------
+if __name__ == "__main__":
+    pasta_raiz = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+    if pasta_raiz not in sys.path:
+        sys.path.insert(0, pasta_raiz)
+
+    from src.compilador.lexer import tokenizar
+    from src.compilador.parser import analisar_sintaxe
+
+    if len(sys.argv) > 1:
+        with open(sys.argv[1], encoding="utf-8") as arq:
+            codigo_demo = arq.read()
+    else:
+        codigo_demo = "PROGRAMA\n  x = 2 * (3 + 1)\nFIM_PROGRAMA"
+
+    arvore, quantidade = analisar_sintaxe(tokenizar(codigo_demo.strip()))
+
+    ctk.set_appearance_mode("dark")
+    raiz_tk = ctk.CTk()
+    raiz_tk.withdraw()
+    janela = JanelaArvoreAST(raiz_tk, arvore.para_dict(), quantidade, codigo_demo)
+    janela.protocol("WM_DELETE_WINDOW", lambda: (janela.fechar(), raiz_tk.destroy()))
+    raiz_tk.mainloop()

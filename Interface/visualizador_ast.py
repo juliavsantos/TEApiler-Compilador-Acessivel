@@ -489,7 +489,6 @@ class JanelaArvoreAST(ctk.CTkToplevel):
         sb_y.grid(row=0, column=1, sticky="ns")
         sb_x = tk.Scrollbar(area, orient="horizontal", command=self.canvas.xview)
         sb_x.grid(row=1, column=0, sticky="ew")
-
         self.canvas.configure(xscrollcommand=sb_x.set, yscrollcommand=sb_y.set)
 
         self.canvas.bind("<Configure>", self._ao_redimensionar)
@@ -820,6 +819,6 @@ if __name__ == "__main__":
     ctk.set_appearance_mode("dark")
     raiz_tk = ctk.CTk()
     raiz_tk.withdraw()
-    janela = JanelaArvoreAST(raiz_tk, arvore.para_dict(),  quantidade, codigo_demo)
+    janela = JanelaArvoreAST(raiz_tk, arvore.para_dict(), quantidade, codigo_demo)
     janela.protocol("WM_DELETE_WINDOW", lambda: (janela.fechar(), raiz_tk.destroy()))
     raiz_tk.mainloop()

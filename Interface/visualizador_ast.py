@@ -488,4 +488,4 @@ class JanelaArvoreAST(ctk.CTkToplevel):
         sb_y = tk.Scrollbar(area, orient="vertical", command=self.canvas.yview)
         sb_y.grid(row=0, column=1, sticky="ns")
         sb_x = tk.Scrollbar(area, orient="horizontal", command=self.canvas.xview)
-        sb_x.grid(row=1, column=0, 
+        sb_x.grid(row=1, column=0,)

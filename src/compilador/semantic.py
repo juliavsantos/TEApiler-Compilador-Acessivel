@@ -161,7 +161,7 @@ class AnalisadorSemantico:
             existente.tipo = DESCONHECIDO
 
         # Adicionando o ID na lista de IDs definidos junto com seu tipo
-        self.definidas.add(no.name)
+        self.definidas.add(no.nome)
         no.tipo_estatico = tipo
 
     # Verificando constantes
@@ -361,7 +361,7 @@ class AnalisadorSemantico:
             if TIPO_LOGICO in (esquerda, direita):
                 self.erro("ERRO_COMPARAR_LOGICO", no)
             elif diferentes:
-                self.erro("ERRO_COMPARAR_TEXTO", no)
+                self.erro("ERRO_COMPARAR_TIPO", no)
         elif diferentes:
             self.erro("ERRO_IGUAL_TIPO", no)
         

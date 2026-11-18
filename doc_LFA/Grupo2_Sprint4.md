@@ -25,11 +25,20 @@
 
 ## 1. Bateria de testes automatizados
 
-- [ ] Testes cobrindo cada feature da v1 (pelo menos 1 caso válido e 1 inválido por feature)
-- [ ] Testes de erro léxico, sintático e semântico, verificando a mensagem retornada
-- [ ] Todos os testes passando; falhas corrigidas ou documentadas como limitação conhecida
+- [ X ] Testes cobrindo cada feature da v1 (pelo menos 1 caso válido e 1 inválido por feature)
+- [ X ] Testes de erro léxico, sintático e semântico, verificando a mensagem retornada
+- [ X ] Todos os testes passando; falhas corrigidas ou documentadas como limitação conhecida
 
 **Cobertura de testes (resumo) e link do repositório:**
+
+Cobrimos todos os erros possíveis e que previmos que poderia acontecer e ser capturados pelo compilador. Focamos em verificar se a mensagem de erro que um código errado na nossa linguagem deve reportar está correta. Separamos em três batidas focando nos erros léxicos, sintáticos e semânticos.
+
+Os três testes podem ser verificados utilizando esse comando:
+``` 
+> python -m unittest discover -s testes -v 
+```
+
+Link Repositório: [https://github.com/juliavsantos/TEApiler-Compilador-Acessivel]
 
 ## 2. Refinamento final
 

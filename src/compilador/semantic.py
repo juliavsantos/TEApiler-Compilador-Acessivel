@@ -403,7 +403,7 @@ class AnalisadorSemantico:
         
         if no.tipo == "Variavel":
             simbolo = self.tabela.buscar(no.nome)
-            return simbolo.valor_constante if simbolo is not None and simbolo.se_constante else None
+            return simbolo.se_constante if simbolo is not None and simbolo.se_constante else None
 
         if no.tipo == "OpAritmetica":
             a, b = self.valor_constante(no.esq), self.valor_constante(no.dir)

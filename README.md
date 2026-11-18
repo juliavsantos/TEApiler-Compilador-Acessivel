@@ -18,6 +18,18 @@ Em conjunto com esse projeto prático, também está sendo escrito um artigo par
 O prototipo do compilador esta na pasta Interface, para teste rode:
 python3 iniciar_ide.py
 
+Iniciar Projeto (dentro da pasta raiz):
+```
+> pip install -r requirements.txt
+> python iniciar_ide.py
+```
+
+Rodar batida de testes (dentro da pasta raiz):
+
+``` 
+> python -m unittest discover -s testes -v 
+```
+
 <br>
 Link Blog do Projeto: https://lex-scan-lab.base44.app <br>
 Link Video do Projeto: https://www.youtube.com/watch?v=TfD6jlNxqRs <br>

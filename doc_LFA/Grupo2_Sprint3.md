@@ -3,7 +3,7 @@
 **Grupo / tema:** Grupo 2 — Compilador para DSL acessível para pessoas com TEA
 
 **Equipe:** Julia Aparecida Venâncio dos Santos; Matheus Akira Saito de Souza; Ronald Lopes Alencar do Rosario; William Souza da Silva
-**Scrum Master do Sprint:**
+**Scrum Master do Sprint:** Julia e Matheus
 **Repositório GitHub:** [https://github.com/juliavsantos/TEApiler-Compilador-Acessivel]
 
 > Lexer funcional e gramática validada na Sprint 2. Esta sprint constrói o **parser**, a **AST** e a **análise semântica básica**, com mensagens de erro pensadas para o público da linguagem (princípios de acessibilidade da Sprint 1). **Não** reabre a gramática sem justificar.
@@ -140,7 +140,7 @@ ANOTA: Não Permitido
 
 CONSTANTE x = 10
 
-CONSTANTE x = 5
+x = 5
 ANOTA: x é uma constante e não pode ser alterado
 ```
 
@@ -154,7 +154,7 @@ CONSTANTE x = 10
 ```
 ANOTA: Não Permitido
 
-CONSTANTE x
+CONSTANTE x = 10
 
 LEIA x
 ANOTA: x é uma constante e não pode ser lida
@@ -164,17 +164,18 @@ ANOTA: x é uma constante e não pode ser lida
 ```
 ANOTA: Permitido
 
-CONSTANTE x = 10
-
 y = 5
+
+CONSTANTE x = 10
 ```
 ```
 ANOTA: Não Permitido
 
+x = 5
+
 CONSTANTE x = 10
 
-x = 5
-ANOTA: x já é uma constante, não é permitido usar o mesmo nome
+ANOTA: x já é uma variável, não é permitido usar o mesmo nome
 ```
 
 - 2.3 - **Variáveis não podem ser utilizados para declarar um valor a uma constante**: É proibido utilizar variáveis na atribuição de constante por não garantir valores fixos. Caso isso aconteça deve ser tratado como erro e parar a execução do programa.
@@ -297,17 +298,19 @@ SE "x maior que 2" ENTAO:
 ANOTA: Condicionais só podem usar valores lógicos em suas condições
 ```
 
-- 5 - **Contas aritméticas permitem apenas números**: Não é permitido utilizar textos ou valores lógicos em contas aritméticas. Caso isso aconteça deve ser tratado como erro e parar a execução do programa.
+- 5 - **Contas aritméticas permitem apenas números**: Não é permitido utilizar textos ou valores lógicos em contas aritméticas, no caso de concatenar números com textos, é apenas válido o sinal de adição, *, /, - e RESTO_DE não são permitidos. Caso isso aconteça deve ser tratado como erro e parar a execução do programa.
 ```
 ANOTA: Permitido
 
 x = 10 + 2
+
+x = 10 + " coisas"
   
 ```
 ```
 ANOTA: Não Permitido
 
-x = 10 + "dois"
+x = 10 * "dois"
 
 y = 15 + VERDADE
 

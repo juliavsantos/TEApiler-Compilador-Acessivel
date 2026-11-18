@@ -121,8 +121,14 @@ class AnalisadorSemantico:
 
     # 
     def bloco(self, comandos):
-        for comando in comandos:
+        avisou = False
+
+        for i, comando in enumerate(comandos):
             self.visitar(comando)
+
+            if comando.tipo == "Parar" and i + 1 < len(comandos) and not avisou:
+                self.aviso("AVISO_PARAR_DEPOIS", comandos[i + 1])
+                avisou = True
 
     def visitar_Programa(self, no):
         self.bloco(no.corpo)
@@ -135,7 +141,7 @@ class AnalisadorSemantico:
         simbolo = self.tabela.declarar(nome, categoria, no.linha, tipo, constante)
 
         if self.estruturas:
-            self.origem[nome] = self.estruturar[-1]
+            self.origem[nome] = self.estruturas[-1]
 
         # Checando se o nome é uma palavra reservada da linguagem em minuscula. 
         if nome != nome.upper() and nome.upper() in RESERVADAS_SET:
@@ -231,15 +237,17 @@ class AnalisadorSemantico:
         if self.nivel_laco == 0:
             self.erro("ERRO_PARAR", no)
 
-    def checar_condicao(self, tipo):
+    def checar_condicao(self, tipo, no):
         if tipo in (TIPO_NUMERO, TIPO_TEXTO):
-            self.erro("ERRO_CONDICIONAL_TIPO")
+            self.erro("ERRO_CONDICIONAL_TIPO", no)
 
 
     # Verificando bloco condicional "SE"
     def visitar_Se(self, no):
         tipo = self.visitar(no.condicao)
-        self.checar_condicao(tipo)
+        self.checar_condicao(tipo, no)
+        if not no.entao:
+            self.aviso("AVISO_BLOCO_VAZIO", no)
 
         self.estruturas.append(("SE", no.linha))
         antes = set(self.definidas)
@@ -265,14 +273,18 @@ class AnalisadorSemantico:
             return
 
         condicao = no.condicao
-        print(condicao.tipo)
-        print(condicao.valor)
 
         if condicao.tipo == "Logico" and condicao.valor is True:
             self.aviso("AVISO_LOOP_INFINITO", no)
             return
         
         variaveis = []
+
+        for nome in nomes_variaveis(condicao):
+            simbolo = self.tabela.buscar(nome)
+
+            if simbolo is not None and not simbolo.se_constante:
+                variaveis.append(nome)
 
         if variaveis and not (set(variaveis) & nomes_modificados(no.corpo)):
             self.aviso("AVISO_LOOP_INFINITO_B", no, nome=variaveis[0]) 
@@ -290,20 +302,20 @@ class AnalisadorSemantico:
 
     def visitar_Enquanto(self, no):
         tipo = self.visitar(no.condicao)
-        self.checar_condicao(tipo)
-        self.avisar_loop_infinito(no)
+        self.checar_condicao(tipo, no)
         self.laco(no, "ENQUANTO", no.corpo)
+        self.avisar_loop_infinito(no)
 
     def visitar_Repita(self, no):
         tipo = self.visitar(no.vezes)
         if tipo in (TIPO_TEXTO, TIPO_LOGICO):
-            self.erro("ERRO_REPITA_TIPO")
+            self.erro("ERRO_REPITA_TIPO", no)
         else:
-            valor = self._valor_constante(no.vezes)
+            valor = self.valor_constante(no.vezes)
             if valor is not None and valor < 0:
-                self.erro("ERRO_REPITA_NEGATIVO")
+                self.erro("ERRO_REPITA_NEGATIVO", no)
             elif valor is not None and not float(valor).is_integer():
-                self._erro("ERRO_REPITA_DECIMAL")
+                self.erro("ERRO_REPITA_DECIMAL", no)
         self.laco(no, "REPITA", no.corpo)
 
     def visitar_Numero(self, no):
@@ -348,7 +360,7 @@ class AnalisadorSemantico:
             self.erro("ERRO_CONTA_LOGICO", no)
         
         if op in ("/", "RESTO_DE") and self.valor_constante(no.dir) == 0:
-            self._erro("ERRO_DIVIDIR_ZERO" if op == "/" else "ERRO_RESTO_ZERO", no)
+            self.erro("ERRO_DIVIDIR_ZERO" if op == "/" else "ERRO_RESTO_ZERO", no)
 
         return TIPO_NUMERO
 
@@ -367,17 +379,17 @@ class AnalisadorSemantico:
         
         return TIPO_LOGICO
 
-    def exigir_logico(self, operando, tipo, operador):
+    def exigir_logico(self, tipo, no):
         if tipo in (TIPO_NUMERO, TIPO_TEXTO):
-            self.erro("ERRO_LOGICO_TIPO")
+            self.erro("ERRO_LOGICO_TIPO", no)
  
     def visitar_OpLogica(self, no):
-        self.exigir_logico(no.esq, self.visitar(no.esq), no.op)
-        self.exigir_logico(no.dir, self.visitar(no.dir), no.op)
+        self.exigir_logico(self.visitar(no.esq), no)
+        self.exigir_logico(self.visitar(no.dir), no)
         return TIPO_LOGICO
  
     def visitar_Nao(self, no):
-        self.exigir_logico(no.valor, self.visitar(no.valor), "NAO")
+        self.exigir_logico(self.visitar(no.valor), no)
         return TIPO_LOGICO
 
 

@@ -50,11 +50,11 @@ Link Repositório: [https://github.com/juliavsantos/TEApiler-Compilador-Acessive
 
 ## 3. Manual da linguagem
 
-- [ ] Sintaxe de cada construção documentada com exemplo comentado
-- [ ] Lista de mensagens de erro possíveis e o que cada uma significa
-- [ ] Escopo da v1 (o que a linguagem faz e não faz) explícito no manual
+- [ X ] Sintaxe de cada construção documentada com exemplo comentado
+- [ X ] Lista de mensagens de erro possíveis e o que cada uma significa
+- [ X ] Escopo da v1 (o que a linguagem faz e não faz) explícito no manual
 
-**Link do manual:**
+**Link do manual:** https://drive.google.com/drive/folders/1z2Pm4okSkJNKR15IT540rFdklulEDxOD?usp=sharing
 
 ## 4. Apresentação/demo final
 
@@ -70,7 +70,10 @@ Link Repositório: [https://github.com/juliavsantos/TEApiler-Compilador-Acessive
 
 | Integrante | O que fiz nesta Sprint | Dificuldades | O que pretendo manter/ajustar |
 |---|---|---|---|
-| | | | |
+| Julia Aparecida Venâncio dos Santos | Participei da organização e do acompanhamento da revisão dos arquivos do projeto e da verificação do funcionamento da IDE, do parser e da visualização da AST. Também acompanhei os testes e a preparação dos materiais para a entrega final. |  montagem do analisador sintático e a criação da visualização da AST foram desafios, pois era a primeira vez que desenvolvia algo desse tipo. No começo, tive dificuldade para compreender como as etapas deveriam funcionar em conjunto e como representar a estrutura do código por meio da árvore. Com o desenvolvimento e os testes, fui entendendo melhor o funcionamento e conseguindo avançar. | Pretendo continuar aprofundando meus conhecimentos sobre compiladores, principalmente sobre análise sintática e árvores sintáticas abstratas. Também quero manter uma boa comunicação com a equipe e a organização das tarefas. Considero importante realizar testes ao longo do desenvolvimento, facilitando a identificação e a correção de problemas. Além disso, acredito que seria interessante implementar a execução dos programas escritos na linguagem, permitindo que o usuário não apenas escreva códigos e receba avisos de erros, mas também consiga executar suas próprias instruções. Nesta versão, nosso foco ficou mais concentrado na interface do compilador e nas etapas de análise e identificação de erros. |
+| Matheus Akira Saito de Souza | Criei batida de testes dos analisadores léxicos, sintáticos e semânticos, testei cada erro na IDE para verificar se está bem integrado com o compilador, gerei, analisei e validei manual da linguagem | Criar o analisador semântico e juntar e testar cada mensagem de erro de cada fase do compilador | Pretendo encontrar outras formas mais efetivas de aplicar a nossa linguagem para o público alvo, talvez através de gamificação e outras ideias. Melhorar minha produtividade e atenção. Estudar os próximos passos do compilador para extender a aplicação para o backend, implementando a execução do código e talvez adição de escopos e funções |
+| Ronald Alencar do Rosário | Finalizei a IDE, acompanhei testes finais e certifiquei que estava ocorrendo tudo de acordo com os erros definidos e features da v1. | Certificar que o design do IDE estava de acordo com os estudo e recomendações de acessibilidade indicadas pelos artigos reunidos | Pretendo ajustar a função de zoom, e adicionar mais funções como de recomendação de tokens | 
+| William Souza | Ajudei na organização final do projeto, finalizei blog de apresentação do projeto. Acompanhei testes realizados tanto na IDE e no compilador | Implementar simulador léxico no blog e fundamentar analise léxica na apresentação | - | 
 
 ---
 

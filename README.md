@@ -15,11 +15,9 @@ Mesmo que alunos diagnosticados com algum nível de Transtorno do Espectro Austi
 Por isso, esse projeto busca elaborar uma Linguagem de Programação acessível para alunos com TEA (principalmente crianças). Para que seja possível criar e executar programas utilizando essa linguagem, também será desenvolvido um compilador específico, TEApiler.<br>
 Em conjunto com esse projeto prático, também está sendo escrito um artigo para fundamentar os conceitos aplicados de Complexidade de Algoritmos. Realizando uma análise assintótica nos algoritmos e estruturas utilizadas na fase de Scanner e Parser do compilador.
 
-O prototipo do compilador esta na pasta Interface, para teste rode:
-python3 iniciar_ide.py
-
 Iniciar Projeto (dentro da pasta raiz):
 ```
+> git clone https://github.com/juliavsantos/TEApiler-Compilador-Acessivel.git
 > pip install -r requirements.txt
 > python iniciar_ide.py
 ```
@@ -33,3 +31,4 @@ Rodar batida de testes (dentro da pasta raiz):
 <br>
 Link Blog do Projeto: https://lex-scan-lab.base44.app <br>
 Link Video do Projeto: https://www.youtube.com/watch?v=TfD6jlNxqRs <br>
+Link Drive do Manual da Linguagem: https://drive.google.com/drive/folders/1z2Pm4okSkJNKR15IT540rFdklulEDxOD?usp=sharing
